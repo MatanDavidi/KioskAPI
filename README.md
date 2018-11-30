@@ -1,0 +1,2 @@
+# KioskAPI
+Unofficial KioskAppAPI
