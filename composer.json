@@ -1,0 +1,15 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Classes\\": "Classes"
+        }
+    },
+    "name": "filippofinke/kiosk-app-api",
+    "authors": [
+        {
+            "name": "filippofinke",
+            "email": "filippo.finke@samtrevano.ch"
+        }
+    ],
+    "require": {}
+}
