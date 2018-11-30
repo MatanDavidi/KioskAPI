@@ -3,7 +3,9 @@ namespace Classes;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$log = new Logger("data.log");
+$settings["app"]["signature"] = "ciao";
+$settings["app"]["deviceuuid"] = "ciao";
+$settings["logger"]["display"] = 1;
 
-$log->log("A");
+$ka = new KioskAPI($settings);
 ?>

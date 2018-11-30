@@ -5,16 +5,24 @@ class Logger {
 
   private $logFile;
 
-  public function __construct($logFile){
+  private $display;
+
+  const HIDDEN = 0;
+
+  const VISIBLE = 1;
+
+  public function __construct($logFile, $display = 0){
     $this->logFile = $logFile;
+    $this->display = $display;
   }
 
   public function log($text){
     $date = date("[H:i:s d/m/y]", time());
-    file_put_contents($this->logFile, $date." ".$text."\n");
+    $text = $date." ".$text."\n";
+    if($this->display == self::VISIBLE)
+      echo $text;
+    file_put_contents($this->logFile, $text);
   }
 
 }
-
-
 ?>
