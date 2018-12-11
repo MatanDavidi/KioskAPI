@@ -1,2 +1,3 @@
 # KioskAPI
-Unofficial KioskAppAPI
+
+- [Requests Doc](Requests.md)
