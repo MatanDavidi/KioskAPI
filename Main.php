@@ -8,4 +8,3 @@ $settings["app"]["deviceuuid"] = "ciao";
 $settings["logger"]["display"] = 1;
 
 $ka = new KioskAPI($settings);
-?>

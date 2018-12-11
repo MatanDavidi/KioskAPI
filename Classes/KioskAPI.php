@@ -3,7 +3,6 @@ namespace Classes;
 
 class KioskAPI
 {
-
     private $signature;
 
     private $deviceuuid;
@@ -20,7 +19,6 @@ class KioskAPI
         $logFile = date("y_m_d_h_i_s") . "log";
         $display = 0;
         if (isset($settings["logger"])) {
-
             if (isset($settings["logger"]["path"])) {
                 $logFile = $settings["logger"]["path"];
             }
@@ -40,6 +38,3 @@ class KioskAPI
         $this->logger->log("KioskAPI initialized.");
     }
 }
-
-
-?>
