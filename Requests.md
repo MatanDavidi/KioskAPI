@@ -31,7 +31,9 @@ curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type
 }
 ```
 
-### Initialize:
+
+### Initialize:
+
 
 ```
 curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type: application/json' -H 'accept-language: de-ch' -H 'x-liquid-timestamp: LIQUID_TIMESTAMP' -H 'user-agent: K-Kiosk/437 CFNetwork/975.0.3 Darwin/18.2.0' -H 'x-liquid-signature: LIQUID_TOKEN' --data-binary '{
@@ -97,7 +99,8 @@ curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type
 }
 ```
 
-### Request pin:
+
+### Request pin:
 
 ```
 curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type: application/json' -H 'accept-language: de-ch' -H 'x-liquid-timestamp: LIQUID_TIMESTAMP' -H 'user-agent: K-Kiosk/437 CFNetwork/975.0.3 Darwin/18.2.0' -H 'x-liquid-signature: LIQUID_TOKEN' --data-binary '{
@@ -114,7 +117,7 @@ curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type
 }
 ```
 
-### Register pin:
+### Register pin:
 
 ```
 curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type: application/json' -H 'accept-language: de-ch' -H 'x-liquid-timestamp: LIQUID_TIMESTAMP' -H 'user-agent: K-Kiosk/437 CFNetwork/975.0.3 Darwin/18.2.0' -H 'x-liquid-signature: LIQUID_TOKEN' --data-binary '{
@@ -233,6 +236,7 @@ curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type
 }' -X PUT --compressed 'https://kkiosk-ufeed.feeds.barcodes.no/v1/user'
 ```
 
+
 > Response:
 
 ```
@@ -318,11 +322,13 @@ curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type
 }
 ```
 
-### Get user info:
+
+### Get user info:
 
 ```
 curl -H 'Host: kkiosk-ufeed.feeds.barcodes.no' -H 'accept: */*' -H 'content-type: application/json' -H 'x-liquid-timestamp: LIQUID_TIMESTAMP' -H 'user-agent: K-Kiosk/437 CFNetwork/975.0.3 Darwin/18.2.0' -H 'x-liquid-signature: LIQUID_TOKEN' -H 'accept-language: de-ch' --compressed 'https://kkiosk-ufeed.feeds.barcodes.no/v1/content?UserID=USER_ID'
 ```
+
 
 > Response:
 
