@@ -24,6 +24,6 @@ class Logger
         if ($this->display == self::VISIBLE) {
             echo $text;
         }
-        file_put_contents($this->logFile, $text);
+        file_put_contents($this->logFile, $text, FILE_APPEND);
     }
 }
