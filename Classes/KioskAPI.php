@@ -17,7 +17,7 @@ class KioskAPI
     public function loadSettings($settings)
     {
         $logFile = date("y_m_d_h_i_s") . "log";
-        $display = 0;
+        $display = Logger::HIDDEN;
         if (isset($settings["logger"])) {
             if (isset($settings["logger"]["path"])) {
                 $logFile = $settings["logger"]["path"];
