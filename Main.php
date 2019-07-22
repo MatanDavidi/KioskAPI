@@ -20,7 +20,7 @@ var_dump($initialize);
 
 $tempUserId = $initialize["UserId"];
 
-$pin = $ka->api->requestPin($tempUserId, "Phone number: ");
+$pin = $ka->api->requestPin($tempUserId, readLine("Phone number: "));
 
 var_dump($pin);
 
