@@ -17,7 +17,7 @@ import kotlin.Metadata;
 import kotlin.TuplesKt;
 import kotlin.collections.CollectionsKt;
 import kotlin.collections.MapsKt;
-import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -82,7 +82,7 @@ public final class RestApi {
         }
 
         public final void setUserId(@NotNull String str) {
-            Intrinsics.checkParameterIsNotNull(str, "<set-?>");
+            
             userId = str;
         }
 
@@ -92,7 +92,7 @@ public final class RestApi {
         }
 
         public final void setTempUserId(@NotNull String str) {
-            Intrinsics.checkParameterIsNotNull(str, "<set-?>");
+            
             tempUserId = str;
         }
 
@@ -102,7 +102,7 @@ public final class RestApi {
         }
 
         public final void setUserName(@NotNull String str) {
-            Intrinsics.checkParameterIsNotNull(str, "<set-?>");
+            
             userName = str;
         }
 
@@ -112,7 +112,7 @@ public final class RestApi {
         }
 
         public final void setMsn(@NotNull String str) {
-            Intrinsics.checkParameterIsNotNull(str, "<set-?>");
+            
             msn = str;
         }
 
@@ -122,24 +122,24 @@ public final class RestApi {
         }
 
         public final void setUserLanguage(@NotNull String str) {
-            Intrinsics.checkParameterIsNotNull(str, "<set-?>");
+            
             userLanguage = str;
         }
 
         public final boolean registered() {
-            return !Intrinsics.areEqual((Object) userId, (Object) "");
+            return !
         }
     }
 
     public RestApi() {
         DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-        Intrinsics.checkExpressionValueIsNotNull(dateTimeFormatter2, "DateTimeFormatter.ISO_OFFSET_DATE_TIME");
+        
         this.dateTimeFormatter = dateTimeFormatter2;
         DateTimeFormatter ofPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Intrinsics.checkExpressionValueIsNotNull(ofPattern, "DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")");
+        
         this.dateFormatter = ofPattern;
-        ZoneId of = ZoneId.m183of("UTC");
-        Intrinsics.checkExpressionValueIsNotNull(of, "ZoneId.of(\"UTC\")");
+        ZoneId of = ZoneId.of("UTC");
+        
         this.utcTimezone = of;
         OkHttpClient.Builder builder2 = new OkHttpClient.Builder();
         builder2.addInterceptor(RestApi$interceptor$1.INSTANCE);
@@ -147,10 +147,10 @@ public final class RestApi {
         httpLoggingInterceptor.setLevel(Level.BODY);
         builder2.addInterceptor(httpLoggingInterceptor);
         OkHttpClient build = builder2.build();
-        Intrinsics.checkExpressionValueIsNotNull(build, "httpClient.build()");
+        
         this.client = build;
         Object create = this.builder.client(this.client).build().create(LiquidApi.class);
-        Intrinsics.checkExpressionValueIsNotNull(create, "retrofit.create(LiquidApi::class.java)");
+        
         this.liquidApi = (LiquidApi) create;
     }
 
@@ -170,43 +170,43 @@ public final class RestApi {
 
     @NotNull
     public final Call<UserIdData> initialize(@NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(str, "culture");
+        
         Map mapOf = MapsKt.mapOf(TuplesKt.m122to("DeviceId", DeviceUUIDFactory.uuid().toString()), TuplesKt.m122to("Culture", str));
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.initialize(signature(format, CollectionsKt.listOf(DeviceUUIDFactory.uuid().toString())), format, mapOf);
     }
 
     @NotNull
     public final Call<Map<String, String>> requestPin(@NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(str, SplashActivityKt.PREF_MSN);
+        
         Map mapOf = MapsKt.mapOf(TuplesKt.m122to("UserId", ApiConfig.INSTANCE.getTempUserId()), TuplesKt.m122to("MSN", str));
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.requestPin(signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getTempUserId(), str)), format, mapOf);
     }
 
     @NotNull
     public final Call<UserIdData> register(@NotNull String str, @NotNull ZonedDateTime zonedDateTime, @NotNull List<Integer> list, @NotNull List<Integer> list2) {
-        Intrinsics.checkParameterIsNotNull(str, "pin");
-        Intrinsics.checkParameterIsNotNull(zonedDateTime, "dob");
-        Intrinsics.checkParameterIsNotNull(list, "approvedConsents");
-        Intrinsics.checkParameterIsNotNull(list2, "revokedConsents");
+        
+        
+        
+        
         String str2 = "UserId";
         Map mapOf = MapsKt.mapOf(TuplesKt.m122to(str2, ApiConfig.INSTANCE.getTempUserId()), TuplesKt.m122to("PIN", str), TuplesKt.m122to("DateOfBirth", zonedDateTime.format(this.dateFormatter)), TuplesKt.m122to("ApprovedConsents", intListToString(list)), TuplesKt.m122to("RevokedConsents", intListToString(list2)));
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.register(signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getTempUserId(), str)), format, mapOf);
     }
 
     @NotNull
     public final Call<UserData> updateUser(@NotNull String str, @NotNull String str2, @NotNull String str3, @NotNull String str4, @Nullable UserGroup userGroup, @NotNull List<Integer> list, @NotNull List<Integer> list2) {
-        Intrinsics.checkParameterIsNotNull(str, "name");
-        Intrinsics.checkParameterIsNotNull(str2, "gender");
-        Intrinsics.checkParameterIsNotNull(str3, "dobString");
-        Intrinsics.checkParameterIsNotNull(str4, "language");
-        Intrinsics.checkParameterIsNotNull(list, "approvedConsents");
-        Intrinsics.checkParameterIsNotNull(list2, "revokedConsents");
+        
+        
+        
+        
+        
+        
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("UserId", ApiConfig.INSTANCE.getUserId());
         jSONObject.put("Name", str);
@@ -226,50 +226,50 @@ public final class RestApi {
         }
         RequestBody create = RequestBody.create(MediaType.parse("text"), jSONObject.toString());
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         String signature = signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getUserId()));
         LiquidApi liquidApi2 = this.liquidApi;
-        Intrinsics.checkExpressionValueIsNotNull(create, "reqBody");
+        
         return liquidApi2.updateUser(signature, format, create);
     }
 
     @NotNull
     public final Call<Map<String, String>> validateRecruit(@NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(str, SplashActivityKt.PREF_MSN);
+        
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.validateRecruit(signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getUserId(), str)), format, ApiConfig.INSTANCE.getUserId(), str);
     }
 
     @NotNull
     public final Call<Map<String, String>> recruit(@NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(str, SplashActivityKt.PREF_MSN);
+        
         Map mapOf = MapsKt.mapOf(TuplesKt.m122to("UserId", ApiConfig.INSTANCE.getUserId()), TuplesKt.m122to("MSN", str));
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.recruit(signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getUserId(), str)), format, mapOf);
     }
 
     @NotNull
     public final Call<UserData> getUser() {
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.getUser(ApiConfig.INSTANCE.getUserId(), signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getUserId())), format);
     }
 
     @NotNull
     public final Call<CouponDataResponse> getCoupons() {
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.getCoupons(signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getUserId())), format, ApiConfig.INSTANCE.getUserId());
     }
 
     @NotNull
     public final Call<Map<String, Object>> shareCoupon(@NotNull Coupon coupon, @NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(coupon, Param.COUPON);
-        Intrinsics.checkParameterIsNotNull(str, SplashActivityKt.PREF_MSN);
+        
+        
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         String signature = signature(format, CollectionsKt.listOf(ApiConfig.INSTANCE.getUserId(), coupon.getCouponId()));
         return this.liquidApi.shareCoupon(signature, format, MapsKt.mapOf(TuplesKt.m122to("UserId", ApiConfig.INSTANCE.getUserId()), TuplesKt.m122to("ScheduleId", String.valueOf(coupon.getScheduleId())), TuplesKt.m122to("ContentId", coupon.getCouponId()), TuplesKt.m122to("FriendUserRef", str)));
     }
@@ -277,7 +277,7 @@ public final class RestApi {
     @NotNull
     public final Call<Languages> languages() {
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.getLanguages(signature(format, CollectionsKt.emptyList()), format);
     }
 
@@ -286,17 +286,17 @@ public final class RestApi {
         String str4 = str;
         String str5 = str2;
         String str6 = str3;
-        Intrinsics.checkParameterIsNotNull(str4, SplashActivityKt.PREF_MSN);
-        Intrinsics.checkParameterIsNotNull(str5, "deviceToken");
-        Intrinsics.checkParameterIsNotNull(str6, "language");
+        
+        
+        
         String uuid = DeviceUUIDFactory.uuid().toString();
-        Intrinsics.checkExpressionValueIsNotNull(uuid, "DeviceUUIDFactory.uuid().toString()");
+        
         String userId = ApiConfig.INSTANCE.getUserId();
         String str7 = "Android";
         String str8 = AppEventsConstants.EVENT_PARAM_VALUE_YES;
         Map mapOf = MapsKt.mapOf(TuplesKt.m122to("DeviceId", uuid), TuplesKt.m122to("UserId", userId), TuplesKt.m122to("DeviceToken", str5), TuplesKt.m122to("MSN", str4), TuplesKt.m122to("Language", str6), TuplesKt.m122to("DeviceType", str7), TuplesKt.m122to("AppVersion", str8));
         String format = ZonedDateTime.now(this.utcTimezone).format(this.dateTimeFormatter);
-        Intrinsics.checkExpressionValueIsNotNull(format, "dateString");
+        
         return this.liquidApi.registerDevice(signature(format, CollectionsKt.listOf(uuid, userId, str5, str4, str6, str7, str8)), format, mapOf);
     }
 }
