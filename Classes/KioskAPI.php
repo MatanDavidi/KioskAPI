@@ -1,13 +1,22 @@
 <?php
 namespace Classes;
+date_default_timezone_set('UTC');
 
 class KioskAPI
 {
-    private $signature;
-
     private $deviceuuid;
 
     private $logger;
+
+    public $api;
+
+    public function getDeviceUUID() {
+        return $this->deviceuuid;
+    }
+
+    public function getLogger() {
+        return $this->logger;
+    }
 
     public function __construct($settings)
     {
@@ -27,14 +36,12 @@ class KioskAPI
             }
         }
         $this->logger = new Logger($logFile, $display);
-        if (isset($settings["app"]["signature"])) {
-            $this->signature = $settings["app"]["signature"];
-            $this->logger->log("Signature: " . $settings["app"]["signature"]);
-        }
         if (isset($settings["app"]["deviceuuid"])) {
             $this->deviceuuid = $settings["app"]["deviceuuid"];
             $this->logger->log("DeviceUUID: " . $settings["app"]["deviceuuid"]);
         }
         $this->logger->log("KioskAPI initialized.");
+        $this->api = new Api($this);
+
     }
 }

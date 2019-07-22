@@ -14,7 +14,7 @@ import com.valora.kkiosk.SplashActivityKt;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.
 import kotlin.text.Charsets;
 import kotlin.text.StringsKt;
 import org.jetbrains.annotations.NotNull;
@@ -42,25 +42,25 @@ public final class Helper {
     @NotNull
     public final byte[] getRawBytes(@NotNull String str) {
         String str2 = "(this as java.lang.String).getBytes(charset)";
-        Intrinsics.checkParameterIsNotNull(str, "text");
+        
         try {
             byte[] bytes = str.getBytes(Charsets.UTF_8);
-            Intrinsics.checkExpressionValueIsNotNull(bytes, str2);
+            
             return bytes;
         } catch (UnsupportedEncodingException unused) {
             byte[] bytes2 = str.getBytes(Charsets.UTF_8);
-            Intrinsics.checkExpressionValueIsNotNull(bytes2, str2);
+            
             return bytes2;
         }
     }
 
     @NotNull
     public final String normalizePhoneNumber(@NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(str, "number");
+        
         PhoneNumberUtil instance = PhoneNumberUtil.getInstance();
         try {
             String format = instance.format(instance.parse(str, "CH"), PhoneNumberFormat.E164);
-            Intrinsics.checkExpressionValueIsNotNull(format, "phoneUtil.format(parsed,…l.PhoneNumberFormat.E164)");
+            
             return format;
         } catch (NumberParseException unused) {
             return "";
@@ -69,7 +69,7 @@ public final class Helper {
 
     @NotNull
     public final String getString(@NotNull byte[] bArr) {
-        Intrinsics.checkParameterIsNotNull(bArr, ShareConstants.WEB_DIALOG_PARAM_DATA);
+        
         try {
             return new String(bArr, Charsets.UTF_8);
         } catch (UnsupportedEncodingException unused) {
@@ -79,29 +79,29 @@ public final class Helper {
 
     @NotNull
     public final byte[] base64Decode(@NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(str, "text");
+        
         byte[] decode = Base64.decode(str, 2);
-        Intrinsics.checkExpressionValueIsNotNull(decode, "Base64.decode(text, Base64.NO_WRAP)");
+        
         return decode;
     }
 
     @NotNull
     public final String base64Encode(@NotNull byte[] bArr) {
-        Intrinsics.checkParameterIsNotNull(bArr, ShareConstants.WEB_DIALOG_PARAM_DATA);
+        
         String encodeToString = Base64.encodeToString(bArr, 2);
-        Intrinsics.checkExpressionValueIsNotNull(encodeToString, "Base64.encodeToString(data, Base64.NO_WRAP)");
+        
         return encodeToString;
     }
 
     @NotNull
     public final String sanitizeMSN(@NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(str, SplashActivityKt.PREF_MSN);
+        
         return StringsKt.replaceFirst$default(normalizePhoneNumber(str), "+", "", false, 4, (Object) null);
     }
 
     public final void logScreen(@NotNull FirebaseAnalytics firebaseAnalytics, @NotNull String str) {
-        Intrinsics.checkParameterIsNotNull(firebaseAnalytics, "firebaseAnalytics");
-        Intrinsics.checkParameterIsNotNull(str, "screenName");
+        
+        
         Bundle bundle = new Bundle();
         bundle.putString(Param.ITEM_CATEGORY, "screen");
         bundle.putString(Param.ITEM_NAME, str);
@@ -109,12 +109,12 @@ public final class Helper {
     }
 
     public final void logEvent(@NotNull FirebaseAnalytics firebaseAnalytics, @NotNull String str, @NotNull String str2, @NotNull String str3) {
-        Intrinsics.checkParameterIsNotNull(firebaseAnalytics, "firebaseAnalytics");
+        
         String str4 = "category";
-        Intrinsics.checkParameterIsNotNull(str, str4);
-        Intrinsics.checkParameterIsNotNull(str2, NativeProtocol.WEB_DIALOG_ACTION);
+        
+        
         String str5 = "label";
-        Intrinsics.checkParameterIsNotNull(str3, str5);
+        
         Bundle bundle = new Bundle();
         bundle.putString(str4, str);
         bundle.putString(str5, str3);

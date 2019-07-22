@@ -3,23 +3,12 @@ namespace Classes;
 
 class DateFormatter
 {
-    private $offset;
 
-    private $format = "Y-m-d\TH:i:s+";
-
-    public function __construct($offset = "01:00")
+    public static function getCurrentDate()
     {
-        $this->offset = $offset;
-    }
-
-    public function formatDate($time)
-    {
-        return date($this->format.$this->offset, $time);
-    }
-
-
-    public function getCurrentDate()
-    {
-        return date($this->format.$this->offset);
+        $micro_date = microtime();
+        $date_array = explode(" ",$micro_date);
+        $date = date("Y-m-d\TH:i:s",$date_array[1]).substr($date_array[0],1 ,4)."Z";
+        return $date;
     }
 }
