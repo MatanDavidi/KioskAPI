@@ -1,6 +1,19 @@
 # KioskAPI
 
+### How to install
+
+> composer -o dumpautoload
+
+
+### Getting started
+See Main.php
+
+
+### Docs
 - [Requests Doc](Requests.md)
 
 
-# Utilizzato solamente per scopo educativo. Non mi assumo nessuna responsabilità.
+### Todo
+- Better README
+
+# Used for educational purposes only. I do not assume any responsibility.
