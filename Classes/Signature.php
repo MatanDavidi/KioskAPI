@@ -1,12 +1,15 @@
 <?php
 namespace Classes;
+
 use Classes\DateFormatter;
 
-class Signature {
-    
+class Signature
+{
     private static function uRShift($a, $b)
     {
-        if($b == 0) return $a;
+        if ($b == 0) {
+            return $a;
+        }
         return ($a >> $b) & ~(1<<(8*PHP_INT_SIZE-1)>>($b-1));
     }
 
@@ -14,7 +17,8 @@ class Signature {
 
     private static $secretkey = "so8#@xsMbkVFyvjV";
 
-    public static function getSignature($uuid) {
+    public static function getSignature($uuid)
+    {
         $date = DateFormatter::getCurrentDate();
         $tohash = utf8_encode($date.$uuid.self::$secretkey);
         $hash = hash("sha256", $tohash, true);
@@ -29,7 +33,4 @@ class Signature {
         }
         return array("signature" => $signature, "date" => $date);
     }
-
 }
-
-?>

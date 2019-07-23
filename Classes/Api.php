@@ -1,34 +1,36 @@
 <?php
 namespace Classes;
+
 use Classes\Logger;
 use Classes\Signature;
 
-class Api {
-
+class Api
+{
     private $baseUrl = "https://kkiosk-ufeed.feeds.barcodes.no/";
-
-    private $uuid;
 
     private $logger;
 
-    public function __construct($kioskapi) {
-        $this->uuid = $kioskapi->getDeviceUUID();
+    private $kioskapi;
+
+    public function __construct($kioskapi)
+    {
+        $this->kioskapi = $kioskapi;
         $this->logger = $kioskapi->getLogger();
-        $this->logger->log("Api initialized with device uuid: " . $this->uuid );
+        $this->logger->log("Api initialized with device uuid: " . $this->kioskapi->getDeviceUUID());
     }
 
-    private function request($endpoint, $signature, $post = null, $put = false) {
+    private function request($endpoint, $signature, $post = null, $put = false)
+    {
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl.$endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
 
-        if($post != null)
-        {
+        if ($post != null) {
             $post = json_encode($post);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-            if($put) {
+            if ($put) {
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
             } else {
                 curl_setopt($ch, CURLOPT_POST, 1);
@@ -48,40 +50,51 @@ class Api {
         $result = curl_exec($ch);
         curl_close($ch);
 
-        $this->logger->log( __CLASS__ . " " . __FUNCTION__ . " " . $result);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__ . " " . $result);
         return json_decode($result, true);
     }
 
-    public function getLanguages() {
+    public function getLanguages()
+    {
         $signature = Signature::getSignature('');
-        $this->logger->log( __CLASS__ . " " . __FUNCTION__);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/Languages?", $signature);
         return $result;
     }
 
-    public function initialize() {
-        $signature = Signature::getSignature($this->uuid);
+    public function initialize()
+    {
+        $signature = Signature::getSignature($this->kioskapi->getDeviceUUID());
         $post = array(
             "Culture" => "de-CH",
-            "DeviceId" => $this->uuid
+            "DeviceId" => $this->kioskapi->getDeviceUUID()
         );
-        $this->logger->log( __CLASS__ . " " . __FUNCTION__);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/initialize", $signature, $post);
+        $this->kioskapi->setUserId($result["UserId"]);
         return $result;
     }
 
-    public function requestPin($userId, $phone) {
+    public function requestPin($phone, $userId = "")
+    {
+        if (empty($userId)) {
+            $userId = $this->kioskapi->getUserId();
+        }
         $signature = Signature::getSignature($userId.$phone);
         $post = array(
             "MSN" => $phone,
             "UserID" => $userId
         );
-        $this->logger->log( __CLASS__ . " " . __FUNCTION__);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/pin", $signature, $post);
         return $result;
     }
 
-    public function register($userId, $pin, $birthdate) {
+    public function register($pin, $birthdate, $userId = "")
+    {
+        if (empty($userId)) {
+            $userId = $this->kioskapi->getUserId();
+        }
         $signature = Signature::getSignature($userId.$pin);
         $post = array(
             "DateOfBirth" => $birthdate,
@@ -90,12 +103,17 @@ class Api {
             "RevokedConsents" => [],
             "UserID" => $userId
         );
-        $this->logger->log( __CLASS__ . " " . __FUNCTION__);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/user", $signature, $post);
+        $this->kioskapi->setUserId($result["UserId"]);
         return $result;
     }
 
-    public function registerUser($userId, $name, $gender, $birthdate, $culture) {
+    public function updateUser($name, $gender, $birthdate, $culture, $userId = "")
+    {
+        if (empty($userId)) {
+            $userId = $this->kioskapi->getUserId();
+        }
         $signature = Signature::getSignature($userId);
         $post = array(
             "DateOfBirth" => $birthdate,
@@ -106,18 +124,32 @@ class Api {
             "RevokedConsents" => [502,837],
             "UserID" => $userId
         );
-        $this->logger->log( __CLASS__ . " " . __FUNCTION__);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/user", $signature, $post, true);
+        $this->kioskapi->setUserId($result["UserId"]);
         return $result;
     }
 
-    public function getCoupons($userId) {
+    public function getCoupons($userId = "")
+    {
+        if (empty($userId)) {
+            $userId = $this->kioskapi->getUserId();
+        }
         $signature = Signature::getSignature($userId);
-        $this->logger->log( __CLASS__ . " " . __FUNCTION__);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/content?UserID=".$userId, $signature);
         return $result;
     }
 
+    public function getUser($userId = "")
+    {
+        if (empty($userId)) {
+            $userId = $this->kioskapi->getUserId();
+        }
+        $signature = Signature::getSignature($userId);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
+        $result = $this->request("/v1/user?UserID=".$userId, $signature);
+        $this->kioskapi->setUserId($result["UserId"]);
+        return $result;
+    }
 }
-
-?>

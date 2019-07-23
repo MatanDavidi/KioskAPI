@@ -9,32 +9,54 @@ require_once __DIR__ . '/vendor/autoload.php';
 $settings["app"]["deviceuuid"] = UUID::getRandomUUID();
 $settings["logger"]["path"] = "tmp/KioskAPI.log";
 $settings["logger"]["display"] = Logger::VISIBLE;
+$settings["logger"]["displaylength"] = 255;
 
 $ka = new KioskAPI($settings);
 
-$languages = $ka->api->getLanguages();
-var_dump($languages);
+$new = false;
 
-$initialize = $ka->api->initialize();
-var_dump($initialize);
-
-$tempUserId = $initialize["UserId"];
-
-$pin = $ka->api->requestPin($tempUserId, readLine("Phone number: "));
-
-var_dump($pin);
-
-$register["ResponseStatus"]["ErrorCode"] = "12";
-while($register["ResponseStatus"]["ErrorCode"] == 12)
-{
-    $register = $ka->api->register($tempUserId, readLine("Pin: "), "1980-01-01");
-    var_dump($register);
+if (file_exists("sessions")) {
+    $files = glob("sessions/*.json");
+    if (count($files) > 0) {
+        echo "Avaiable sessions:\n";
+        echo "Number\tUserId\n";
+        for ($i = 0; $i < count($files); $i++) {
+            echo "$i\t".$files[$i]."\n";
+        }
+        $index = readLine("Select a session (or press ENTER to create a new one): ");
+        if (is_numeric($index)) {
+            $session = $files[$index];
+            $ka->load($session);
+        } else {
+            $new = true;
+        }
+    } else {
+        $new = true;
+    }
+} else {
+    $new = true;
 }
-var_dump($register);
 
-$userId = $register["UserId"];
-$updated = $ka->api->registerUser($userId, "Test Test", "M", "1980-01-01", "de-CH");
-var_dump($updated);
+if ($new) {
+    $languages = $ka->api->getLanguages();
 
-$coupons = $ka->api->getCoupons($userId);
-var_dump($coupons);
+    $initialize = $ka->api->initialize();
+
+    $pin = $ka->api->requestPin(readLine("Phone number: "));
+
+    $register["ResponseStatus"]["ErrorCode"] = "12";
+    while ($register["ResponseStatus"]["ErrorCode"] == 12) {
+        $register = $ka->api->register(readLine("Pin: "), "1980-01-01");
+    }
+
+    $updated = $ka->api->updateUser("Test Test", "M", "1980-01-01", "de-CH");
+}
+
+$coupons = $ka->api->getCoupons();
+
+$userInfo = $ka->api->getUser();
+
+echo "UserId: ".$ka->getUserId()."\n";
+echo "DeviceId: ".$ka->getDeviceUUID()."\n";
+
+$ka->save();
