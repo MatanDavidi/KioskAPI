@@ -105,7 +105,7 @@ class Api
         );
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/user", $signature, $post);
-        $this->kioskapi->setUserId($result["UserId"]);
+        if(isset($result["UserId"])) $this->kioskapi->setUserId($result["UserId"]);
         return $result;
     }
 
@@ -115,7 +115,7 @@ class Api
             $userId = $this->kioskapi->getUserId();
         }
         $signature = Signature::getSignature($userId);
-        $post = array(
+        $put = array(
             "DateOfBirth" => $birthdate,
             "Culture" => $culture,
             "Name" => $name,
@@ -125,7 +125,7 @@ class Api
             "UserID" => $userId
         );
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
-        $result = $this->request("v1/user", $signature, $post, true);
+        $result = $this->request("v1/user", $signature, $put, true);
         $this->kioskapi->setUserId($result["UserId"]);
         return $result;
     }
@@ -137,7 +137,24 @@ class Api
         }
         $signature = Signature::getSignature($userId);
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
-        $result = $this->request("v1/content?UserID=".$userId, $signature);
+        $res = $this->request("v1/content?UserID=".$userId, $signature);
+        $result["coupons"] = $res["Sections"][0]["Content"];
+        $result["loyalty"] = $res["Sections"][1]["Content"];
+        $result["rewards"] = $res["Sections"][2]["Content"];
+        $result["offers"] = $res["Sections"][3]["Content"];
+        return $result;
+    }
+
+    public function shareCoupon($couponId, $scheduleId, $phone) {
+        $signature = Signature::getSignature($this->kioskapi->getUserId().$couponId);
+        $this->logger->log(__CLASS__ . " " . __FUNCTION__);
+        $post = array(
+            "UserId" => $this->kioskapi->getUserId(),
+            "ScheduleId" => $scheduleId,
+            "ContentId" => $couponId,
+            "FriendUserRef" => $phone
+        );
+        $result = $this->request("/v1/share", $signature, $post);
         return $result;
     }
 
@@ -149,7 +166,7 @@ class Api
         $signature = Signature::getSignature($userId);
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("/v1/user?UserID=".$userId, $signature);
-        $this->kioskapi->setUserId($result["UserId"]);
         return $result;
     }
+
 }

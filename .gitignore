@@ -2,3 +2,6 @@ php-cs-fixer-v2.phar
 /tmp/
 /vendor/.php_cs.cache
 /sessions/
+*.log
+/vendor/
+/output/
