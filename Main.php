@@ -7,7 +7,7 @@ use Classes\Signature;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $settings["app"]["deviceuuid"] = UUID::getRandomUUID();
-$settings["logger"]["path"] = "tmp/KioskAPI.log";
+$settings["logger"]["path"] = "KioskAPI.log";
 $settings["logger"]["display"] = Logger::VISIBLE;
 $settings["logger"]["displaylength"] = 255;
 
@@ -38,25 +38,60 @@ if (file_exists("sessions")) {
 }
 
 if ($new) {
-    $languages = $ka->api->getLanguages();
 
     $initialize = $ka->api->initialize();
 
     $pin = $ka->api->requestPin(readLine("Phone number: "));
 
     $register["ResponseStatus"]["ErrorCode"] = "12";
-    while ($register["ResponseStatus"]["ErrorCode"] == 12) {
+    while (isset($register["ResponseStatus"]["ErrorCode"])) {
         $register = $ka->api->register(readLine("Pin: "), "1980-01-01");
     }
 
-    $updated = $ka->api->updateUser("Test Test", "M", "1980-01-01", "de-CH");
 }
+while(true) {
 
-$coupons = $ka->api->getCoupons();
+    echo "Index\tMethod name\n";
+    $methods = get_class_methods($ka->api);
+    for($x = 0; $x < count($methods); $x++)
+    {
+        $method = $methods[$x];
+        if($method == "__construct") continue;
+        $r = new ReflectionMethod($ka->api, $method);
+        $params = $r->getParameters();
+        echo $x."\t".$method."(";
+        for($i = 0; $i < count($params); $i++) {
+            $param = $params[$i];
+            echo $param->getName();
+            if($param->isOptional()) echo '=""';
+            if($i != count($params) - 1)echo ", ";
+        }
+        echo ")\n";
+    }
+    $index = readLine("Select a method: ");
+    if(isset($methods[$index]))
+    {
+        $method = $methods[$index];
+        $r = new ReflectionMethod($ka->api, $method);
+        $params = $r->getParameters();
+        $args = [];
+        foreach($params as $param) {
+            $args[] = readline($param->getName().": ");
+        }
+        $save = readLine("Save output to a file? y/n: ");
+        $result = call_user_func_array(array($ka->api, $method), $args);
+        if(strtolower($save) != "n") {
+            if(!file_exists("output")) mkdir("output");
+            $path = "output/$method.json";
+            file_put_contents($path, json_encode($result));
+            echo "Saved to $path\n";
+        }
 
-$userInfo = $ka->api->getUser();
+    }
+    else {
+        break;
+    }
 
-echo "UserId: ".$ka->getUserId()."\n";
-echo "DeviceId: ".$ka->getDeviceUUID()."\n";
+}
 
 $ka->save();
