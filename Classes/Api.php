@@ -105,7 +105,9 @@ class Api
         );
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/user", $signature, $post);
-        if(isset($result["UserId"])) $this->kioskapi->setUserId($result["UserId"]);
+        if (isset($result["UserId"])) {
+            $this->kioskapi->setUserId($result["UserId"]);
+        }
         return $result;
     }
 
@@ -145,7 +147,8 @@ class Api
         return $result;
     }
 
-    public function shareCoupon($couponId, $scheduleId, $phone) {
+    public function shareCoupon($couponId, $scheduleId, $phone)
+    {
         $signature = Signature::getSignature($this->kioskapi->getUserId().$couponId);
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $post = array(
@@ -168,5 +171,4 @@ class Api
         $result = $this->request("/v1/user?UserID=".$userId, $signature);
         return $result;
     }
-
 }
