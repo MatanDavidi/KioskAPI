@@ -40,7 +40,7 @@ if (file_exists("sessions")) {
 if ($new) {
     $initialize = $ka->api->initialize();
 
-    $pin = $ka->api->requestPin(readLine("Phone number: "));
+    $pin = $ka->api->requestPin(readLine("Phone number (without +): "));
 
     $register["ResponseStatus"]["ErrorCode"] = "12";
     while (isset($register["ResponseStatus"]["ErrorCode"])) {

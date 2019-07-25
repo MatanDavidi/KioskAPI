@@ -22,10 +22,15 @@ class Logger
         $date = date("[H:i:s d/m/y]", time());
         $text = $date." ".$text;
         if ($this->display == self::VISIBLE) {
+            $delimiter = "\n";
+            if (php_sapi_name() !== 'cli') {
+                $delimiter = "<br>";
+                $text = htmlspecialchars($text);
+            };
             if (is_numeric($this->displayLength)) {
-                echo substr($text, 0, $this->displayLength)."\n";
+                echo substr($text, 0, $this->displayLength).$delimiter;
             } else {
-                echo $text."\n";
+                echo $text.$delimiter;
             }
         }
         file_put_contents($this->logFile, $text."\n", FILE_APPEND);
