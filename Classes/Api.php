@@ -140,10 +140,10 @@ class Api
         $signature = Signature::getSignature($userId);
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $res = $this->request("v1/content?UserID=".$userId, $signature);
-        $result["coupons"] = $res["Sections"][0]["Content"];
-        $result["loyalty"] = $res["Sections"][1]["Content"];
         $result["rewards"] = $res["Sections"][2]["Content"];
         $result["offers"] = $res["Sections"][3]["Content"];
+        $result["coupons"] = $res["Sections"][0]["Content"];
+        $result["loyalty"] = $res["Sections"][1]["Content"];
         return $result;
     }
 

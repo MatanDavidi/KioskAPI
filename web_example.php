@@ -1,3 +1,5 @@
+<a href="/">Go back to /</a>
+<hr>
 <?php
 use Classes\KioskAPI;
 use Classes\Logger;
@@ -52,7 +54,6 @@ if (isset($_GET["session"])) {
     }
 }
 ?>
-
 <?php if ($logged):
         $coup = $ka->api->getCoupons();
         $userId = $ka->getUserId();
