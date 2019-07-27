@@ -4,7 +4,7 @@ use Classes\Logger;
 use Classes\UUID;
 use Classes\Signature;
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $settings["app"]["deviceuuid"] = UUID::getRandomUUID();
 $settings["logger"]["path"] = "KioskAPI.log";
