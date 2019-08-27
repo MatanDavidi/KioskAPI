@@ -13,27 +13,6 @@ class KioskAPI
 
     public $api;
 
-    public function save()
-    {
-        $userId = $this->userId;
-        $data = json_encode($this->api->getUser($userId));
-        if (!file_exists("sessions")) {
-            mkdir("sessions");
-        }
-        file_put_contents("sessions/".$userId.".json", $data);
-        $this->logger->log("Session saved to sessions/".$userId.".json");
-    }
-
-    public function load($path)
-    {
-        $data = json_decode(file_get_contents($path), true);
-        $this->userId = $data["UserId"];
-        $this->deviceuuid = $data["DeviceId"];
-        $this->logger->log("Session loaded from $path");
-        $this->logger->log("DeviceUUID: " . $this->deviceuuid);
-        $this->logger->log("UserId: " . $this->userId);
-    }
-
     public function getDeviceUUID()
     {
         return $this->deviceuuid;
@@ -81,5 +60,26 @@ class KioskAPI
         }
         $this->logger->log("KioskAPI initialized.");
         $this->api = new Api($this);
+    }
+
+    public function save()
+    {
+        $userId = $this->userId;
+        $data = json_encode($this->api->getUser($userId));
+        if (!file_exists("sessions")) {
+            mkdir("sessions");
+        }
+        file_put_contents("sessions/".$userId.".json", $data);
+        $this->logger->log("Session saved to sessions/".$userId.".json");
+    }
+
+    public function load($path)
+    {
+        $data = json_decode(file_get_contents($path), true);
+        $this->userId = $data["UserId"];
+        $this->deviceuuid = $data["DeviceId"];
+        $this->logger->log("Session loaded from $path");
+        $this->logger->log("DeviceUUID: " . $this->deviceuuid);
+        $this->logger->log("UserId: " . $this->userId);
     }
 }

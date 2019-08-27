@@ -5,6 +5,10 @@ use Classes\DateFormatter;
 
 class Signature
 {
+    private static $chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+
+    private static $secretkey = "so8#@xsMbkVFyvjV";
+
     private static function uRShift($a, $b)
     {
         if ($b == 0) {
@@ -12,10 +16,6 @@ class Signature
         }
         return ($a >> $b) & ~(1<<(8*PHP_INT_SIZE-1)>>($b-1));
     }
-
-    private static $chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
-
-    private static $secretkey = "so8#@xsMbkVFyvjV";
 
     public static function getSignature($uuid)
     {
