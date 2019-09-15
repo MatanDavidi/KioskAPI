@@ -10,10 +10,8 @@ See Main.php
 
 
 ### Docs
-- [Requests Doc](Requests.md)
+- [Api class](api_doc.md)
+- [Reversed Requests](requests.md)
 
-
-### Todo
-- Better README
 
 # Used for educational purposes only. I do not assume any responsibility.

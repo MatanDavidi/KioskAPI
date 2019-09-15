@@ -4,14 +4,31 @@ namespace Classes;
 use Classes\Logger;
 use Classes\Signature;
 
+/**
+ * KioskApp API methods.
+ */
 class Api
 {
+
+    /**
+     * Endpoint base url.
+     */
     private $baseUrl = "https://kkiosk-ufeed.feeds.barcodes.no/";
 
+    /**
+     * Logger for the api class.
+     */
     private $logger;
 
+    /**
+     * KioskAPI object.
+     */
     private $kioskapi;
 
+    /**
+     * Constructor
+     * @param object $kioskapi KioskAPI object.
+     */
     public function __construct($kioskapi)
     {
         $this->kioskapi = $kioskapi;
@@ -19,6 +36,13 @@ class Api
         $this->logger->log("Api initialized with device uuid: " . $this->kioskapi->getDeviceUUID());
     }
 
+    /**
+     * HTTP Calls to endpoints.
+     * @param string $endpoint the api endpoint.
+     * @param array $signature a signature array.
+     * @param boolean $post if the request must be post.
+     * @param boolean $put if the request must be put.
+     */
     private function request($endpoint, $signature, $post = null, $put = false)
     {
         $ch = curl_init();
@@ -54,6 +78,10 @@ class Api
         return json_decode($result, true);
     }
 
+    /**
+     * Get avaiable languages.
+     * @return array
+     */
     public function getLanguages()
     {
         $signature = Signature::getSignature('');
@@ -62,6 +90,10 @@ class Api
         return $result;
     }
 
+    /**
+     * Create a temporary user.
+     * @return array
+     */
     public function initialize()
     {
         $signature = Signature::getSignature($this->kioskapi->getDeviceUUID());
@@ -75,6 +107,12 @@ class Api
         return $result;
     }
 
+    /**
+     * Request phone pin.
+     * @param string $phone the telephone to which the pin is to be sent without +.
+     * @param string $userId default current user. 
+     * @return array
+     */
     public function requestPin($phone, $userId = "")
     {
         if (empty($userId)) {
@@ -90,6 +128,13 @@ class Api
         return $result;
     }
 
+    /**
+     * Register an account.
+     * @param integer $pin the code.
+     * @param string $birthdate the birthdate.
+     * @param string $userId default current user. 
+     * @return array
+     */
     public function register($pin, $birthdate, $userId = "")
     {
         if (empty($userId)) {
@@ -111,6 +156,15 @@ class Api
         return $result;
     }
 
+    /**
+     * Edit account informations.
+     * @param string $name the name.
+     * @param string $gender the gender.
+     * @param string $birthdate the birthdate.
+     * @param string $culture the culture.
+     * @param string $userId default current user. 
+     * @return array
+     */
     public function updateUser($name, $gender, $birthdate, $culture, $userId = "")
     {
         if (empty($userId)) {
@@ -132,6 +186,11 @@ class Api
         return $result;
     }
 
+    /**
+     * Get account coupons.
+     * @param string $userId default current user. 
+     * @return array
+     */
     public function getCoupons($userId = "")
     {
         if (empty($userId)) {
@@ -147,6 +206,13 @@ class Api
         return $result;
     }
 
+    /**
+     * Share a coupon.
+     * @param string $couponId the coupon id.
+     * @param string $scheduleId the coupon schedule id.
+     * @param string $phone the receiver phone.
+     * @return array 
+     */
     public function shareCoupon($couponId, $scheduleId, $phone)
     {
         $signature = Signature::getSignature($this->kioskapi->getUserId().$couponId);
@@ -161,6 +227,11 @@ class Api
         return $result;
     }
 
+    /**
+     * Get user informations.
+     * @param string $userId default current user. 
+     * @return array 
+     */
     public function getUser($userId = "")
     {
         if (empty($userId)) {
