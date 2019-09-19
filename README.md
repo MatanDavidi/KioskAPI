@@ -2,7 +2,7 @@
 
 ### How to install
 
-> composer -o dumpautoload
+> composer require filippofinke/kiosk-app-api master-dev
 
 
 ### Getting started
