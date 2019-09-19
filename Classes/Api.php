@@ -178,7 +178,14 @@ class Api
             "Gender" => $gender,
             "ApprovedConsents" => [543],
             "RevokedConsents" => [502,837],
-            "UserID" => $userId
+            "UserID" => $userId,
+            "UserGroups" => [
+                array(
+                    "GroupId" => "Tabak-Aktionen",
+                    "IsUserMember" => "true",
+                    "UserCode" => ""
+                )
+            ]
         );
         $this->logger->log(__CLASS__ . " " . __FUNCTION__);
         $result = $this->request("v1/user", $signature, $put, true);
