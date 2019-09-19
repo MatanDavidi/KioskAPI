@@ -5,13 +5,14 @@
         }
     },
     "name": "filippofinke/kiosk-app-api",
+    "description": "Unofficial kiosk app API.",
     "authors": [
         {
             "name": "filippofinke",
             "email": "filippo.finke@samtrevano.ch"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {},
     "require-dev": {
         "victorjonsson/markdowndocs": "^1.3"

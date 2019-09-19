@@ -2,7 +2,7 @@
 
 ### How to install
 
-> composer require filippofinke/kiosk-app-api master-dev
+> composer require filippofinke/kiosk-app-api
 
 
 ### Getting started

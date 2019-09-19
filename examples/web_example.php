@@ -5,7 +5,7 @@ use Classes\KioskAPI;
 use Classes\Logger;
 use Classes\UUID;
 use Classes\Signature;
-
+session_start();
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $files = [];
@@ -34,11 +34,11 @@ if (isset($_GET["session"])) {
 } elseif (isset($_GET["pin"]) && isset($_GET["phone"])) {
     $phone = $_GET["phone"];
     $pin = $_GET["pin"];
-    $userId = file_get_contents($phone);
+    $userId = $_SESSION[$phone];
     $register = $ka->api->register($pin, "1980-01-01", $userId);
     if (isset($register["UserId"])) {
         $ka->save();
-        unlink($phone);
+        unset($_SESSION[$phone]);
         $phone = false;
         $logged = true;
     }
@@ -47,7 +47,7 @@ if (isset($_GET["session"])) {
     $initialize = $ka->api->initialize();
     $pin = $ka->api->requestPin($phone);
     $userId = $ka->getUserId();
-    file_put_contents($phone, $userId);
+    $_SESSION[$phone] = $userId;
 } else {
     if (file_exists("sessions")) {
         $files = glob("sessions/*.json");
@@ -67,7 +67,7 @@ if (isset($_GET["session"])) {
     foreach ($coup as $type => $coupons) {
         echo "<h2>$type</h2>";
         foreach ($coupons as $c) {
-            echo "<div style='display: inline-block; padding: 10px; border: 2px solid black;'>";
+            echo "<div style='display: inline-block; padding: 10px;>";
             if ($c["ShareType"] == "Shareable") {
                 echo '<form method="get">
                     <input type="hidden" name="session" value="'.$session.'" />
@@ -78,9 +78,9 @@ if (isset($_GET["session"])) {
                 </form>';
             }
             echo $c["ScheduleId"]." ".$c["ContentId"]." ".$c["TopText"]." ".$c["ShareType"].((isset($c["ContentUrl"]))?' <a href="'.$c["ContentUrl"].'">ContentUrl (probably a game)</a>':'')."<br>";
-            echo '<img width="150px" src="'.$c["TopImageUrl"].'">';
+            echo '<div style="text-align: center; border: 5px solid #01C5F5;"><img width="280px" style="margin: auto;" src="'.$c["TopImageUrl"].'"></div>';
             if (isset($c["BarcodeUrl"])) {
-                echo '<img width="80" src="'.$c["BarcodeUrl"].'">';
+                echo '<br><div style="text-align: center;"><img width="60" src="'.$c["BarcodeUrl"].'"></div>';
             }
             echo "</div>";
         }
