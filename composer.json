@@ -11,6 +11,7 @@
             "email": "filippo.finke@samtrevano.ch"
         }
     ],
+    "minimum-stability": "dev",
     "require": {},
     "require-dev": {
         "victorjonsson/markdowndocs": "^1.3"
